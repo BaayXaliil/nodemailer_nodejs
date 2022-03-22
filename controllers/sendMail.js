@@ -39,7 +39,7 @@ const sendEmail = (to, url, txt) => {
 
     transporter.sendMail(mailOptions, (err, infor) => {
         if(err) return err;
-        return infor
+        console.log(infor)
     })
 }
 
