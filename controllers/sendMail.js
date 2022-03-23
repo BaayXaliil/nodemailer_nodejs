@@ -12,7 +12,7 @@ const sendEmail = (to, url, txt) => {
         service: 'gmail',
         auth: {
             user: SENDER_EMAIL_ADDRESS,
-            pass: GMAIL_PASSWORD
+            pass: "giszhueroadpupbb"
         }
     });
     
