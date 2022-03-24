@@ -1,31 +1,22 @@
-const nodemailer = require('nodemailer')
+const sgMail = require('@sendgrid/mail')
 
 const {
     GMAIL_PASSWORD,
-    SENDER_EMAIL_ADDRESS
+    SENDER_EMAIL_ADDRESS,
+    API_KEY
 } = process.env
 
+sgMail.setApiKey(API_KEY);
 // send mail
 const sendEmail = (to, url, txt) => {
-
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true, 
-        auth: {
-            user: SENDER_EMAIL_ADDRESS,
-            pass: "giszhueroadpupbb"
-        }
-    });
-    
 
     const mailOptions = {
         from: SENDER_EMAIL_ADDRESS,
         to: to,
-        subject: "DevAT Channel",
+        subject: "SendGrid testing in NodeJs",
         html: `
             <div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
-            <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to the DevAT channel.</h2>
+            <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to KHALIL Dev.</h2>
             <p>Congratulations! You're almost set to start using DEVAT✮SHOP.
                 Just click the button below to validate your email address.
             </p>
@@ -38,10 +29,13 @@ const sendEmail = (to, url, txt) => {
             </div>
         `
     }
+    return new Promise((resolve, reject) => {
 
-    transporter.sendMail(mailOptions, (err, infor) => {
-        if(err) return err;
-        console.log(infor)
+        sgMail.send(mailOptions, (err, info) => {
+            if (err)
+                reject(err);
+            resolve(info);
+        })
     })
 }
 

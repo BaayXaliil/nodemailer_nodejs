@@ -7,7 +7,7 @@ const {CLIENT_URL} = process.env
 
 const userCtrl = {
     register: async (req, res) => {
-        try {
+        // try {
             const {name, email, password} = req.body
             
             if(!name || !email || !password)
@@ -28,16 +28,16 @@ const userCtrl = {
                 name, email, password: passwordHash
             }
 
-            const activation_token = createActivationToken(newUser)
-
-            const url = `${CLIENT_URL}/home/overview/${activation_token}`
-            sendMail(email, url, "Verify your email address");
-
-            res.json({msg: "Register Success! Please activate your email to start.", url})
-
-        } catch (err) {
-            return res.status(500).json({msg: err.message})
-        }
+            const token = jwt.sign(newUser, process.env.ACTIVATION_TOKEN_SECRET, {expiresIn: '5m'})
+            const url = `${CLIENT_URL}/home/overview/${token}`
+            sendMail(email, url, "Verify your email address").then(info => {
+                console.log(info);
+                res.json({msg: "Register Success! Please activate your email to start."})
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({msg: err.message})
+            })
+        
     },
     activateEmail: async (req, res) => {
         try {
