@@ -11,7 +11,10 @@ sgMail.setApiKey(API_KEY);
 const sendEmail = (to, url, txt) => {
 
     const mailOptions = {
-        from: SENDER_EMAIL_ADDRESS,
+        from: {
+            name: "Ibrahima Diop",
+            email: SENDER_EMAIL_ADDRESS
+        },
         to: to,
         subject: "SendGrid testing in NodeJs",
         html: `
