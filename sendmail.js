@@ -29,12 +29,12 @@ var send = function(email, url, text) {
         </div>
     `
     };
-    return new Promise((reject, response)=> {
+    return new Promise((resolve, reject)=> {
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 reject(error);
             } else {
-                response(info)
+                resolve(info)
             }
         });
     })
