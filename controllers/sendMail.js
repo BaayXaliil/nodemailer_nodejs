@@ -9,7 +9,9 @@ const {
 const sendEmail = (to, url, txt) => {
 
     const transporter = nodemailer.createTransport({
-        service: 'smtp.gmail.com',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true, 
         auth: {
             user: SENDER_EMAIL_ADDRESS,
             pass: "giszhueroadpupbb"
