@@ -28,7 +28,7 @@ const userCtrl = {
             name, email, password: passwordHash
         }
 
-        const token = jwt.sign(newUser, process.env.ACTIVATION_TOKEN_SECRET, { expiresIn: '5m' })
+        const token = createActivationToken(newUser)
         const url = `${CLIENT_URL}/activation/${token}`
         sendMail(email, url, "Verify your email address").then(info => {
             console.log(info);
