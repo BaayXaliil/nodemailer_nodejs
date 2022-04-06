@@ -154,13 +154,17 @@ const userCtrl = {
         }
     },
     updateUser: async (req, res) => {
+        const avatar = "https://sendmail-nodejs.herokuapp.com/images/" + req.file.filename;
         try {
-            const { name, avatar } = req.body
-            await Users.findOneAndUpdate({ _id: req.user.id }, {
-                name, avatar
-            })
+            const { name } = req.body
+            await Users.findOneAndUpdate(req.user.id, {
+                $set: {
+                    name, avatar
+                }
+            }, {new: true}).then((user) => {
+                res.json({ msg: "Update Success!", user })
+            }).catch(err => {throw Error(err)})
 
-            res.json({ msg: "Update Success!" })
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }

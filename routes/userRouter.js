@@ -2,6 +2,7 @@ const router = require('express').Router()
 const userCtrl = require('../controllers/userCtrl')
 const auth = require('../middleware/auth')
 const authAdmin = require('../middleware/authAdmin')
+const storage = require('../middleware/uploadImage')
 
 router.post('/register', userCtrl.register)
 
@@ -21,7 +22,7 @@ router.get('/all_info', auth, authAdmin, userCtrl.getUsersAllInfor)
 
 router.get('/logout', userCtrl.logout)
 
-router.patch('/update', auth, userCtrl.updateUser)
+router.patch('/update', auth, storage, userCtrl.updateUser)
 
 router.patch('/update_role/:id', auth, authAdmin, userCtrl.updateUsersRole)
 
