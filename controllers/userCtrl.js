@@ -1,6 +1,6 @@
-const Users = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { userModel } = require('../models/userModel')
 const sendMail = require('../sendmail')
 
 const { CLIENT_URL } = process.env
@@ -16,7 +16,7 @@ const userCtrl = {
         if (!validateEmail(email))
             return res.status(400).json({ msg: "Invalid emails." })
 
-        const user = await Users.findOne({ email })
+        const user = await userModel.findOne({ email })
         if (user) return res.status(400).json({ msg: "This email already exists." })
 
         if (password.length < 6)
@@ -43,13 +43,13 @@ const userCtrl = {
         try {
             const { activation_token } = req.body
             const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
-
+            console.log(user);
             const { name, email, password } = user
 
-            const check = await Users.findOne({ email })
+            const check = await userModel.findOne({ email })
             if (check) return res.status(400).json({ msg: "This email already exists." })
 
-            const newUser = new Users({
+            const newUser = new userModel({
                 name, email, password
             })
 
@@ -64,7 +64,7 @@ const userCtrl = {
     login: async (req, res) => {
         try {
             const { email, password } = req.body
-            const user = await Users.findOne({ email })
+            const user = await userModel.findOne({ email })
             if (!user) return res.status(400).json({ msg: "This email does not exist." })
 
             const isMatch = await bcrypt.compare(password, user.password)
@@ -154,13 +154,11 @@ const userCtrl = {
         }
     },
     updateUser: async (req, res) => {
-        const avatar = "https://sendmail-nodejs.herokuapp.com/images/" + req.file.filename;
+        // const avatar = "https://sendmail-nodejs.herokuapp.com/images/" + req.file.filename;
         try {
             const { name } = req.body
-            await Users.findOneAndUpdate(req.user.id, {
-                $set: {
-                    name, avatar
-                }
+            await userModel.findByIdAndUpdate(req.user.id, {
+                name
             }, {new: true}).then((user) => {
                 res.json({ msg: "Update Success!", user })
             }).catch(err => {throw Error(err)})

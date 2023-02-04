@@ -3,7 +3,7 @@ const Gallery = require('../models/galleryModel');
 const uploadCtrl = {
     uploadImage: async (req, res) => {
         const {name} = req.body;
-        const imagePath = "https://sendmail-nodejs.herokuapp.com/images/" + req.file.filename;
+        const imagePath = "http://localhost:5000/images/" + req.file.filename;
         try {
             const gallery = new Gallery({ name, imagePath})
             const newGallery = await gallery.save();

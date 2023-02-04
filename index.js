@@ -17,11 +17,12 @@ app.use('/images', express.static(path.join('images')))
 // Routes
 app.use('/user', require('./routes/userRouter'))
 app.use('/api', require('./routes/upload'))
+app.use('/transaction', require('./routes/transactionRouter'))
 
 
 // Connect to mongodb
 mongoose
-    .connect(process.env.MONGO_URL)
+    .connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log("DB Connection Successfull!"))
     .catch((err) => {
         console.log(err);

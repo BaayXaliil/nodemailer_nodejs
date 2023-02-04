@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter your email!"],
         trim: true,
-        unique: true
     },
     password: {
         type: String,
@@ -24,9 +23,11 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
-    }
+    },
+    solde: { type: Number, default: 0}
 }, {
     timestamps: true
 })
 
-module.exports = mongoose.model("Users", userSchema)
+let userModel = mongoose.model("User", userSchema)
+module.exports = { userModel, userSchema}
